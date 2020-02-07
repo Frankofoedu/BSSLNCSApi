@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +30,7 @@ namespace BSSLNCSApi
         {
             services.AddControllers();
 
-            services.AddDbContext<BSSLSYS_ITFContext>(o => o.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<dc_ncsContext>(o => o.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDbContext<Models.AppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AppConnection")));
 
@@ -67,6 +68,10 @@ namespace BSSLNCSApi
             app.UseRouting();
 
             app.UseAuthorization();
+
+            var option = new RewriteOptions();
+            option.AddRedirect("^$", "docs");
+            app.UseRewriter(option);
 
             app.UseEndpoints(endpoints =>
             {

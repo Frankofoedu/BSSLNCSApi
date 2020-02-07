@@ -27,13 +27,18 @@ namespace BSSLNCSApi.Controllers
     public class RevenueController : ControllerBase
     {
 
-        private readonly BSSLSYS_ITFContext context;
+        private readonly dc_ncsContext context;
 
-        public RevenueController(BSSLSYS_ITFContext _context)
+        public RevenueController(dc_ncsContext _context)
         {
             context = _context;
         }
 
+
+        /// <summary>
+        /// To get list of all revenue categories
+        /// </summary>
+        /// <returns>List of Main category and a list of subcategories under the main category with rates</returns>
         [HttpGet("GetRevenueCategories")]
         public IActionResult GetCat()
         {
@@ -41,35 +46,47 @@ namespace BSSLNCSApi.Controllers
             {
                 var data = new Dictionary<string, RevenueViewModel>();
 
-                var subCats = context.Revenue.ToList();
+                var subCa = context.Revenue;
+
+                var subCats = subCa.ToList();
 
                 foreach (var subCat in subCats)
                 {
                     if (!data.ContainsKey(subCat.Category))
                     {
-                        data.Add(subCat.Category, new RevenueViewModel
+                        var mCat = context.Revenuecat.FirstOrDefault(x => x.Catcode == subCat.Category);
+
+                        if (mCat != null)
                         {
-                            MainCatCode = subCat.Category,
-                            MainCatDesc = context.Revenuecat.FirstOrDefault(x => x.Catcode == subCat.Category).Catrevdesc,
-                            SubCategories = new List<RevenueSubCategory> {
-                                new RevenueSubCategory { 
+
+                            data.Add(subCat.Category, new RevenueViewModel
+                            {
+
+                                MainCatCode = subCat.Category,
+                                MainCatDesc = mCat.Catrevdesc,
+                                SubCategories = new List<RevenueSubCategory> {
+                                new RevenueSubCategory {
                                      RevCode = $"{subCat.Subcode}{subCat.Revcode}",
-                                    Rate = subCat.Revenuerate, 
-                                    SubCatCode = subCat.Subcode, 
-                                    SubCatDesc = subCat.Revdesc } 
-                            }
-                        });
+                                    Rate = subCat.Revenuerate,
+                                    SubCatCode = subCat.Subcode,
+                                    SubCatDesc = subCat.Revdesc }
+                                }
+                            });
+                        }
+
+
                     }
                     else
                     {
-                       data[subCat.Category].SubCategories.Add(
-                         new RevenueSubCategory {
-                             RevCode = $"{subCat.Subcode}{subCat.Revcode}",
-                             Rate = subCat.Revenuerate,
-                                    SubCatCode = subCat.Subcode,
-                                    SubCatDesc = subCat.Revdesc 
-                         }
-                       );
+                        data[subCat.Category].SubCategories.Add(
+                          new RevenueSubCategory
+                          {
+                              RevCode = $"{subCat.Subcode}{subCat.Revcode}",
+                              Rate = subCat.Revenuerate,
+                              SubCatCode = subCat.Subcode,
+                              SubCatDesc = subCat.Revdesc
+                          }
+                        );
                     }
                 }
 
@@ -79,12 +96,10 @@ namespace BSSLNCSApi.Controllers
             {
                 return StatusCode(500, e.Message);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return StatusCode(500);
-            }        
-
-
+                return StatusCode(500, e.Message);
+            }
         }
 
     }

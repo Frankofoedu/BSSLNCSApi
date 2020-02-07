@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace BSSLNCSApi
 {
-    public partial class BSSLSYS_ITFContext : DbContext
+    public partial class dc_ncsContext : DbContext
     {
-        public BSSLSYS_ITFContext()
+        public dc_ncsContext()
         {
         }
 
-        public BSSLSYS_ITFContext(DbContextOptions<BSSLSYS_ITFContext> options)
+        public dc_ncsContext(DbContextOptions<dc_ncsContext> options)
             : base(options)
         {
         }
@@ -18,8 +18,14 @@ namespace BSSLNCSApi
         public virtual DbSet<Revenue> Revenue { get; set; }
         public virtual DbSet<Revenuecat> Revenuecat { get; set; }
 
-
-     
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-2VLJF7J\\SQLEXPRESS;Initial Catalog=dc_ncs;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -73,7 +79,6 @@ namespace BSSLNCSApi
                     .IsUnicode(false);
 
                 entity.Property(e => e.Revcode1)
-                    .IsRequired()
                     .HasColumnName("revcode1")
                     .HasMaxLength(30)
                     .IsUnicode(false);
