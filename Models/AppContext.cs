@@ -18,5 +18,6 @@ namespace BSSLNCSApi.Models
         }
 
         public DbSet<Member> Members { get; set; }
+        public DbSet<MemberTransaction>  MemberTransactions { get; set; }
     }
 }

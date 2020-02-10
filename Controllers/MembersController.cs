@@ -35,7 +35,7 @@ namespace BSSLNCSApi.Controllers
         /// </summary>
         /// <param name="member">Object containing the member id, name and status </param>
         /// <returns></returns>
-        [HttpPost("SendNewMember")]
+        [HttpPost("NewMember")]
         public async Task<IActionResult> PostMemberAsync([FromBody] MemberViewModel member)
         {
            
@@ -63,9 +63,7 @@ namespace BSSLNCSApi.Controllers
 
                 context.Members.Add(mm);
 
-
                 await context.SaveChangesAsync();
-
                 
             }
             catch (Exception ex)
@@ -77,6 +75,32 @@ namespace BSSLNCSApi.Controllers
         }
 
 
+        /// <summary>
+        /// To send new member registered
+        /// </summary>
+        /// <param name="member">Object containing the member id, name and status </param>
+        /// <returns></returns>
+        [HttpPost("NewTransaction")]
+        public async Task<IActionResult> PostMemberTransaction([FromBody] MemberTransaction vm)
+        {
+            try
+            {
+                if (vm == null || !ModelState.IsValid)
+                {
+                    return BadRequest("Please input all required fields");
+                }
+
+                context.MemberTransactions.Add(vm);
+
+               await context.SaveChangesAsync();
+                return Ok("Transaction saved");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Could not create transaction");
+            }
+        }
 
     }
+
 }
