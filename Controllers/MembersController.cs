@@ -13,16 +13,7 @@ namespace BSSLNCSApi.Controllers
     [ApiController]
     public class MembersController : ControllerBase
     {
-        public  class MemberViewModel
-        {
-            [Required]
-            public string MembersId { get; set; }
-            [Required]
-            public string MemberName { get; set; }
-            [Required]
-            public string Status { get; set; }
-        }
-
+        
         private readonly Models.AppContext context;
 
         public MembersController(Models.AppContext _context)
@@ -74,23 +65,36 @@ namespace BSSLNCSApi.Controllers
             return Ok(member);
         }
 
-
         /// <summary>
         /// To send new member registered
         /// </summary>
         /// <param name="member">Object containing the member id, name and status </param>
         /// <returns></returns>
         [HttpPost("NewTransaction")]
-        public async Task<IActionResult> PostMemberTransaction([FromBody] MemberTransaction vm)
+        public async Task<IActionResult> PostMemberTransaction([FromBody] MemberTransactionViewModel vm)
         {
             try
             {
+
                 if (vm == null || !ModelState.IsValid)
                 {
                     return BadRequest("Please input all required fields");
                 }
 
-                context.MemberTransactions.Add(vm);
+
+                var mt = new MemberTransaction
+                {
+                    ActDate = vm.Date,
+                    ActYear = vm.Year,
+                    CrValue = vm.CrValue,
+                    CustCode = vm.CustomerCode,
+                    InvoiceAmount = vm.InvoiceAmount,
+                    TransAmount = vm.TransAmount,
+                    RecNo = $"NCS/INV/{DateTime.Today}/{DateTime.Now.ToString("00000")}"
+                };
+
+
+                context.MemberTransactions.Add(mt);
 
                await context.SaveChangesAsync();
                 return Ok("Transaction saved");
@@ -100,7 +104,23 @@ namespace BSSLNCSApi.Controllers
                 return BadRequest("Could not create transaction");
             }
         }
-
+        public class MemberViewModel
+        {
+            [Required]
+            public string MembersId { get; set; }
+            [Required]
+            public string MemberName { get; set; }
+            [Required]
+            public string Status { get; set; }
+        }
+        public class MemberTransactionViewModel
+        {
+            public DateTime? Date { get;  set; }
+            public string Year { get;  set; }
+            public string CustomerCode { get;  set; }
+            public string CrValue { get;  set; }
+            public string TransAmount { get;  set; }
+            public string InvoiceAmount { get; set; }
+        }
     }
-
 }
