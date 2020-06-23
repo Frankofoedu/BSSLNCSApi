@@ -116,9 +116,9 @@ namespace BSSLNCSApi.Controllers
                await context.SaveChangesAsync();
                 return Ok("Transaction saved");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest("Could not create transaction");
+                return BadRequest($"Could not create transaction. {Environment.NewLine}{ex.Message}");
             }
         }
         public class MemberViewModel
