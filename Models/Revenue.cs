@@ -24,5 +24,7 @@ namespace BSSLNCSApi
         public string Subhead { get; set; }
         public int? FrequencyPay { get; set; }
         public string Apprv { get; set; }
+
+        public string FreqPay { get; set; }
     }
 }

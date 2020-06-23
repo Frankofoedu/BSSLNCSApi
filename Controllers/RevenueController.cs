@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +21,7 @@ namespace BSSLNCSApi.Controllers
         public string SubCatCode { get; set; }
         public string SubCatDesc { get; set; }
         public decimal? Rate { get; set; }
+        public string FrequencyOfPay { get; set; }
     }
 
     [Route("api/[controller]")]
@@ -65,11 +67,14 @@ namespace BSSLNCSApi.Controllers
                                 MainCatCode = subCat.Category,
                                 MainCatDesc = mCat.Catrevdesc,
                                 SubCategories = new List<RevenueSubCategory> {
-                                new RevenueSubCategory {
+                                new RevenueSubCategory { 
                                      RevCode = $"{subCat.Subcode}{subCat.Revcode}",
                                     Rate = subCat.Revenuerate,
                                     SubCatCode = subCat.Subcode,
-                                    SubCatDesc = subCat.Revdesc }
+                                    SubCatDesc = subCat.Revdesc, 
+                                    FrequencyOfPay = subCat.FreqPay
+
+                                }
                                 }
                             });
                         }

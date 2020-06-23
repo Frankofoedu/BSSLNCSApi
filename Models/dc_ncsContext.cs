@@ -126,6 +126,10 @@ namespace BSSLNCSApi
                     .HasColumnName("WHATCODE")
                     .HasMaxLength(50);
 
+                entity.Property(e => e.FreqPay)
+                    .HasColumnName("freqPay")
+                    .HasMaxLength(50);
+
                 entity.Property(e => e.Whatdesc)
                     .HasColumnName("WHATDESC")
                     .IsUnicode(false);

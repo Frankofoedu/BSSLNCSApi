@@ -4,22 +4,39 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using BSSLNCSApi.Models;
+using BSSLNCSApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BSSLNCSApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class MembersController : ControllerBase
     {
         
         private readonly Models.AppContext context;
-
-        public MembersController(Models.AppContext _context)
+        private readonly IUserService userService;
+        public MembersController(Models.AppContext _context, IUserService _userService)
         {
             context = _context;
+            userService = _userService;
         }
+
+
+        //[AllowAnonymous]
+        //[HttpPost("authenticate")]
+        //public IActionResult Authenticate([FromBody]AuthenticateModel model)
+        //{
+        //    var user = userService.Authenticate(model.CompCode, model.Password);
+
+        //    if (user == null)
+        //        return BadRequest(new { message = "Username or password is incorrect" });
+
+        //    return Ok(user);
+        //}
 
         /// <summary>
         /// To send new member registered
@@ -122,5 +139,14 @@ namespace BSSLNCSApi.Controllers
             public string TransAmount { get;  set; }
             public string InvoiceAmount { get; set; }
         }
+    }
+
+    public class AuthenticateModel
+    {
+        [Required]
+        public string CompCode { get; set; }
+
+        [Required]
+        public string Password { get; set; }
     }
 }
