@@ -89,7 +89,8 @@ namespace BSSLNCSApi.Controllers
                               RevCode = $"{subCat.Subcode}{subCat.Revcode}",
                               Rate = subCat.Revenuerate,
                               SubCatCode = subCat.Subcode,
-                              SubCatDesc = subCat.Revdesc
+                              SubCatDesc = subCat.Revdesc,
+                              FrequencyOfPay = subCat.FreqPay
                           }
                         );
                     }
