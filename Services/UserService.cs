@@ -8,7 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using AppContext = BSSLNCSApi.Models.AppContext;
+using DcNCSApiContext = BSSLNCSApi.Models.DcNCSApiContext;
 
 namespace BSSLNCSApi.Services
 {
@@ -19,9 +19,9 @@ namespace BSSLNCSApi.Services
     }
     public class UserService : IUserService
     {
-        public readonly AppContext context;
+        public readonly DcNCSApiContext context;
         public IConfiguration Configuration { get; }
-        public UserService(AppContext _context, IConfiguration configuration)
+        public UserService(DcNCSApiContext _context, IConfiguration configuration)
         {
             context = _context;
             Configuration = configuration;

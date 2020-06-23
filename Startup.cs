@@ -36,7 +36,7 @@ namespace BSSLNCSApi
 
             services.AddDbContext<dc_ncsContext>(o => o.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDbContext<Models.AppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AppConnection")));
+            services.AddDbContext<Models.DcNCSApiContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AppConnection")));
 
             services.AddScoped<IUserService, UserService>();
 

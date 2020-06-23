@@ -17,9 +17,9 @@ namespace BSSLNCSApi.Controllers
     public class MembersController : ControllerBase
     {
         
-        private readonly Models.AppContext context;
+        private readonly Models.DcNCSApiContext context;
         private readonly IUserService userService;
-        public MembersController(Models.AppContext _context, IUserService _userService)
+        public MembersController(Models.DcNCSApiContext _context, IUserService _userService)
         {
             context = _context;
             userService = _userService;

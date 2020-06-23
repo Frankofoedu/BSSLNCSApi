@@ -6,13 +6,9 @@ using System.Threading.Tasks;
 
 namespace BSSLNCSApi.Models
 {
-    public class AppContext : DbContext
+    public class DcNCSApiContext : DbContext
     {
-        public AppContext()
-        {
-        }
-
-        public AppContext(DbContextOptions<AppContext> options)
+        public DcNCSApiContext(DbContextOptions options)
             : base(options)
         {
         }
